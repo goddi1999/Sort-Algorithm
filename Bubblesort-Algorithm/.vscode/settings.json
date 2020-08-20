@@ -1,0 +1,10 @@
+
+
+{
+    "java.configuration.updateBuildConfiguration": "disabled",
+
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\path\\to\\jarfile\\commons-logging-1.1.1.jar"
+    ]
+}
