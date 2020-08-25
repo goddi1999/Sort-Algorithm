@@ -95,6 +95,10 @@ function main() {
             // user value
             var currentValInput = $("#" + currentID).val();
 
+            // get next element
+            var nextElement = $(this).next().attr("id");
+            $("#" + nextElement).focus();
+
             parseInt(currentValInput);
             userInputList.push(currentValInput);
             // create text on Box
