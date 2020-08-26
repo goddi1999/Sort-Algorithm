@@ -45,7 +45,7 @@ public class BubbleSortController  implements WebMvcConfigurer {
    @Override
    public void addCorsMappings(CorsRegistry registry) {
        // Allow cross origin requests from local javascript application
-       registry.addMapping("/**").allowedOrigins("http://127.0.0.1:5500");
+       registry.addMapping("/**").allowedOrigins("http://127.0.0.1:5501");
    }
 
   

@@ -120,23 +120,71 @@ function main() {
             // solved Array from Bubblesort as JSON OBJECT
             var sortedArrayJson = solveArraywithBubblesort(userInputListJson);
             console.log("sortedArray", sortedArrayJson);
+
+
             // convert to JSONObject
             var sortedArray = JSON.parse(sortedArrayJson);
             console.log("backend-recive sortedArray.arrayJSON\t", sortedArray.arrayJSON);
-            console.log("USERINPUT\t", userInputList);
+            for (var x in userInputList) {
+                userInputList.push(parseInt(userInputList));
+
+            }
+            console.log("USERINPUT\t", userInputList[1]);
             sortedArray = sortedArray.arrayJSON;
+            console.log("sortedarr", sortedArray)
 
-            for (let index = 0; index < userInputList.length; index++) {
-                var element = userInputList[index];
-                var element2 = sortedArray[index];
 
-                if (element != element2) {
-                    console.log("userINPUT:", element, "!=", element2, "sortedARRAY", index, "<-index")
-                    switchBox(index, index + 1)
-                    break;
+            // create 2d array
+            var twoDimensionalArray = [];
+
+            function setArraySize(arr) {
+                return arr.length / 5
+            }
+
+            var LEN = setArraySize(sortedArray)
+            var p = 0;
+            for (let i = 0; i < LEN; i++) {
+                twoDimensionalArray[i] = [];
+                for (let j = 0; j < 5; j++) {
+                    twoDimensionalArray[i][j] = sortedArray[p];
+                    p++;
+
+
                 }
 
             }
+
+            var index = 0;
+            console.log("LEN", LEN);
+            console.log("\n\ntwoDimensionalArray", twoDimensionalArray)
+            while (index != LEN) {
+                for (let j = 0; j < 5; j++) {
+
+                    var userInput = userInputList[j];
+                    var backendSolution = twoDimensionalArray[index][j];
+                    if (userInput != backendSolution) {
+                        console.log("userInputlist", userInputList[j])
+                        console.log("backendSolution", backendSolution)
+                        console.log("j= ", j, "\tj+1 = ", j + 1)
+                        switchBox(j, j + 1);
+                        index++;
+
+
+                    }
+
+                }
+
+
+
+            }
+            console.log("done")
+
+
+
+
+
+
+
 
 
 
@@ -252,13 +300,13 @@ function main() {
 
 
     // add it to Scene
-    scene.add(box0)
-    scene.add(box1)
-    scene.add(box2)
-    scene.add(box3)
-    scene.add(box4)
+    scene.add(box0);
+    scene.add(box1);
+    scene.add(box2);
+    scene.add(box3);
+    scene.add(box4);
     scene.add(floor);
-    scene.add(pointLight)
+    scene.add(pointLight);
     scene.add(directionalLight);
 
 
@@ -266,7 +314,7 @@ function main() {
 
 
     //set comera position
-    camera.position.x = 0
+    camera.position.x = 0;
     camera.position.y = 1; // 12
     camera.position.z = 10; // 0
 
@@ -309,11 +357,11 @@ function main() {
         // tl.to(boxACurrentPostion.position, 1, { z: 2, ease: Expo.easeOut }).to(boxBCurrentPostion.position, 0.5, { x: boxACurrentPostion, ease: Expo.easeOut });
         // tl.to(boxACurrentPostion.position, 1, { x: boxBCurrentPostion, ease: Expo.easeOut }).to(boxACurrentPostion.position, 1, { z: 0, ease: Expo.easeOut });
 
-        var tl = new TimelineMax({}).delay(.3);
+        var tl = new TimelineMax({ paused: false, delay: .3 });
         // current Position from Boxes
         var box0 = scene.getObjectByName("box" + indexA);
         var box1 = scene.getObjectByName("box" + indexB);
-        console.log(indexA, indexB);
+        console.log("swtich indexA: ", indexA, "swtich indexB: ", indexB);
         var boxACurrentPostion = box0.position.x;
         var boxBCurrentPostion = box1.position.x;
         //nimation in X | Y | Z
