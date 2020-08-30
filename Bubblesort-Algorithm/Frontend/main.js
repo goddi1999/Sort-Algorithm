@@ -17,7 +17,7 @@ var scene = new THREE.Scene();
 //generate Box
 function generateBox(w, h, d) {
     var geometry = new THREE.BoxGeometry(h, w, d);
-    var material = new THREE.MeshPhongMaterial({ color: "rgb(202, 169, 144);" });
+    var material = new THREE.MeshPhongMaterial({ color: "#007789" });
     var mesh = new THREE.Mesh(geometry, material);
 
     mesh.translateY(2);
@@ -224,7 +224,7 @@ function main() {
     var controlCamera = new OrbitControls(camera, renderer.domElement);
 
     // set background color
-    renderer.setClearColor("#ffffff");
+    renderer.setClearColor("#eee");
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     // add it to html site
@@ -315,11 +315,11 @@ function main() {
 
     //set comera position
     camera.position.x = 0;
-    camera.position.y = 1; // 12
-    camera.position.z = 10; // 0
+    camera.position.y = 7; // 12
+    camera.position.z = 5; // 0
 
     // camere view 
-    camera.lookAt(new THREE.Vector3(0, 1, 0));
+    camera.lookAt(new THREE.Vector3(0, 0, -20));
 
 
 
