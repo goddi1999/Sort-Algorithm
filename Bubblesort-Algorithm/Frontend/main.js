@@ -152,20 +152,27 @@ function main() {
 
                 }
 
+
             }
 
             var index = 0;
             console.log("LEN", LEN);
             console.log("\n\ntwoDimensionalArray", twoDimensionalArray)
             while (index != LEN) {
-                for (let j = 0; j < 5; j++) {
+                for (let j = 0; j < 4; j++) {
 
                     var userInput = userInputList[j];
                     var backendSolution = twoDimensionalArray[index][j];
                     if (userInput != backendSolution) {
+
+                        // print numbers from backend / inputs
                         console.log("userInputlist", userInputList[j])
                         console.log("backendSolution", backendSolution)
+
+                        // index
                         console.log("j= ", j, "\tj+1 = ", j + 1)
+
+                        // animation
                         switchBox(j, j + 1);
                         index++;
 
@@ -315,11 +322,11 @@ function main() {
 
     //set comera position
     camera.position.x = 0;
-    camera.position.y = 7; // 12
-    camera.position.z = 5; // 0
+    camera.position.y = 1; // 12
+    camera.position.z = 15; // 0
 
     // camere view 
-    camera.lookAt(new THREE.Vector3(0, 0, -20));
+    camera.lookAt(new THREE.Vector3(0, 1, 0));
 
 
 
