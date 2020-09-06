@@ -60,8 +60,4 @@
         border: solid 2px rgb(207, 194, 188);
         box-shadow: 0 0 20px 5px white;
     }
-    
-    #userInterface {
-        margin-left: 400px;
-        position: absolute;
-    }
+    /* #userInterface {} */

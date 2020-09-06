@@ -10,8 +10,95 @@ var scene = new THREE.Scene();
 
 
 // gloabal Functions
+var index = 0;
 
 
+// create Datastructure
+// create head
+var head = null;
+
+
+// create Node structure
+class NodeElement {
+
+    // create Node structure
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+
+    // append Node
+    append(data) {
+
+        var appendNode = new NodeElement(data)
+        if (head == null) {
+
+            head = appendNode;
+
+
+        } else {
+            var newNode = head;
+            while (newNode.next != null) {
+                newNode = newNode.next;
+
+
+            }
+            newNode.next = appendNode;
+
+
+        }
+
+    }
+
+    // switch node on Index
+    switchNodePositon(index) {
+        var switchNode = head;
+        var currentPostion = 0;
+
+        while (currentPostion != index) {
+            switchNode = switchNode.next;
+            currentPostion++;
+        }
+
+        var currentNode = switchNode.data;
+        var nextCurrentNode = switchNode.next.data;
+        console.log(currentNode, "  ", nextCurrentNode)
+
+        var tmp = nextCurrentNode;
+        switchNode.next.data = currentNode;
+        switchNode.data = tmp;
+
+
+    }
+
+    // print all Node data
+    printNode() {
+        var current = head;
+        var index = 0;
+
+        while (current != null) {
+            console.log("index: ", index, " node Data: ", current.data);
+            current = current.next;
+            index++;
+
+        }
+    }
+
+    // find Node on Index return the data as String
+    findNode(index) {
+        var findNode = head;
+        var currentPostion = 0;
+
+        while (currentPostion != index) {
+            findNode = findNode.next;
+            currentPostion++;
+        }
+
+
+        return findNode.data;
+
+    }
+}
 
 
 //generate Box
@@ -50,6 +137,22 @@ box4.name = "box4"
 
 
 
+var list = new NodeElement();
+
+// add it to datascruture
+list.append(box0);
+list.append(box1);
+list.append(box2);
+list.append(box3);
+list.append(box4);
+
+
+
+list.printNode();
+
+
+
+
 // generate text
 function generateText(number, cubeName) {
     var loader = new THREE.FontLoader();
@@ -83,7 +186,7 @@ function generateText(number, cubeName) {
 
 
 
-
+// MAIN FUNCTION 
 
 function main() {
 
@@ -91,16 +194,26 @@ function main() {
         var userInputList = [];
 
         $("input").keyup(function() {
+
+            // get current ID
             var currentID = $(this).attr('id');
+
             // user value
             var currentValInput = $("#" + currentID).val();
 
-            // get next element
+            // go to next user Input field
             var nextElement = $(this).next().attr("id");
             $("#" + nextElement).focus();
 
+            // covert to Integer
             parseInt(currentValInput);
+
+            // add to datastructure
+            // append(currentValInput);
+
+            // push it to our list as Integer
             userInputList.push(currentValInput);
+
             // create text on Box
             generateText(currentValInput, boxArray[currentID]);
 
@@ -114,7 +227,6 @@ function main() {
             // create JSONOject from user Input
             var userInputListJson = JSON.stringify(userInputList);
 
-            console.log("typeof: ", typeof(userInputListJson));
             console.log("userinputjson: ", userInputListJson);
 
             // solved Array from Bubblesort as JSON OBJECT
@@ -131,7 +243,6 @@ function main() {
             }
             console.log("USERINPUT\t", userInputList[1]);
             sortedArray = sortedArray.arrayJSON;
-            console.log("sortedarr", sortedArray)
 
 
             // create 2d array
@@ -155,57 +266,53 @@ function main() {
 
             }
 
-            var index = 0;
             console.log("LEN", LEN);
             console.log("\n\ntwoDimensionalArray", twoDimensionalArray)
-            while (index != LEN) {
-                for (let j = 0; j < 4; j++) {
+            var n = 0;
+            var timer = setInterval(() => {
+                for (let j = n; j < 4; j++) {
 
                     var userInput = userInputList[j];
+                    userInput = parseInt(userInput);
                     var backendSolution = twoDimensionalArray[index][j];
+
                     if (userInput != backendSolution) {
 
                         // print numbers from backend / inputs
-                        console.log("userInputlist", userInputList[j])
-                        console.log("backendSolution", backendSolution)
+                        console.log("userInput", userInput, "index:", j)
+                        console.log("backendSolution", backendSolution, "index: ", index, "\tj: ", j)
 
                         // index
-                        console.log("j= ", j, "\tj+1 = ", j + 1)
+                        // console.log("j= ", j, "\tj+1 = ", j + 1)
 
-                        // animation
+                        // console.log("switch function");
                         switchBox(j, j + 1);
-                        index++;
+                        // typeof 
+                        // console.log("typeof backend solution", typeof(backendSolution))
+                        // console.log("typeof backend user input ", typeof(userInput))
+                        // bool = bool.vars.onComplete();
+                        // console.log("bool value", bool)
+                        // console.log("interval 3.4 sekunds", index)
+                        n++;
+                        index = index + 1;
 
+                        break;
 
                     }
-
                 }
 
 
+                if (index == LEN) {
+                    console.log("done")
+                    clearInterval(timer);
 
-            }
-            console.log("done")
-
-
-
-
-
-
-
-
+                }
+            }, 3400);
 
 
 
 
         });
-
-
-
-
-
-
-
-
 
 
     });
@@ -364,32 +471,37 @@ function main() {
         // tl.to(boxACurrentPostion.position, 1, { z: 2, ease: Expo.easeOut }).to(boxBCurrentPostion.position, 0.5, { x: boxACurrentPostion, ease: Expo.easeOut });
         // tl.to(boxACurrentPostion.position, 1, { x: boxBCurrentPostion, ease: Expo.easeOut }).to(boxACurrentPostion.position, 1, { z: 0, ease: Expo.easeOut });
 
-        var tl = new TimelineMax({ paused: false, delay: .3 });
+        var tl = new TimelineMax({
+            paused: false,
+            delay: .3,
+            // data: true,
+            onComplete: function() {
+                return true;
+
+            },
+
+        });
+
         // current Position from Boxes
-        var box0 = scene.getObjectByName("box" + indexA);
-        var box1 = scene.getObjectByName("box" + indexB);
-        console.log("swtich indexA: ", indexA, "swtich indexB: ", indexB);
+        var box0 = list.findNode(indexA);
+        var box1 = list.findNode(indexB);
+        // console.log("swtich indexA: ", indexA, "swtich indexB: ", indexB);
         var boxACurrentPostion = box0.position.x;
         var boxBCurrentPostion = box1.position.x;
+
         //nimation in X | Y | Z
         tl.to(box0.position, 1, { z: 2, ease: Expo.easeOut }).to(box0.position, 0.5, { x: boxBCurrentPostion, ease: Expo.easeOut });
         tl.to(box1.position, 1, { x: boxACurrentPostion, ease: Expo.easeOut }).to(box0.position, 1, { z: 0, ease: Expo.easeOut });
 
 
-        return 0;
+        list.switchNodePositon(indexA)
+        return tl;
     }
 
 
+
 }
 
-/*
-    
-JQUERY SYNTAX
-$(target).event(function(){
-}
-});
-    
-*/
 
 
 
