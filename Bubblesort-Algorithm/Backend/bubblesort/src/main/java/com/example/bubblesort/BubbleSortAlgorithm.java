@@ -3,9 +3,7 @@ package com.example.bubblesort;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.*;
-// import java.util.JSON;
-// import java.util.JSONArray;
-// import java.utilt.IOException;
+
 
 public class BubbleSortAlgorithm {
 
@@ -29,17 +27,17 @@ public class BubbleSortAlgorithm {
                     unsortedArray[i] = unsortedArray[i + 1];
                     unsortedArray[i + 1] = tmp;
 
-                    for (int j = 0; j < unsortedArray.length; j++) {
-                        // System.out.print(" | " + arrayInteger[j]);
-
-                        sortedArray.add(unsortedArray[j]);
-
-
-
-                    }
+             
                 }
             }
             iteration++;
+        }
+        for (int j = 0; j < unsortedArray.length; j++) {
+
+            
+            sortedArray.add(unsortedArray[j]);
+            
+            
         }
 
 

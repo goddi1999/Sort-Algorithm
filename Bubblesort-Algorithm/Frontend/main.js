@@ -3,14 +3,13 @@
 import * as THREE from "./build/three.module.js";
 
 // import for modules
+
+//Orbit controls allow the camera to orbit around a target
 import { OrbitControls } from "./lib/jsm/controls/OrbitControls.js";
 
 // create Scene 
 var scene = new THREE.Scene();
 
-
-// gloabal Functions
-var index = 0;
 
 
 // create Datastructure
@@ -18,7 +17,7 @@ var index = 0;
 var head = null;
 
 
-// create Node structure
+// create Node structure Type class
 class NodeElement {
 
     // create Node structure
@@ -100,14 +99,20 @@ class NodeElement {
     }
 }
 
-
+// green #0FF000 or rgb(124,252,0)
+// yellow "rgb(222,184,135)
+// sandstone rgb(207, 194, 188)
+// greey #808e9b
 //generate Box
 function generateBox(w, h, d) {
     var geometry = new THREE.BoxGeometry(h, w, d);
-    var material = new THREE.MeshPhongMaterial({ color: "#007789" });
-    var mesh = new THREE.Mesh(geometry, material);
+    var material = new THREE.MeshPhongMaterial({ color: "rgb(207, 194, 188)" }); // grey  
 
-    mesh.translateY(2);
+    var mesh = new THREE.Mesh(geometry, material);
+    mesh.position.y = -3
+        // material.opacity = 0.7
+    material.transparent = true;
+    mesh.translateY(0);
     // shadow
     mesh.castShadow = true;
     return mesh;
@@ -147,13 +152,13 @@ list.append(box3);
 list.append(box4);
 
 
-
+// print node type Data 
 list.printNode();
 
 
 
 
-// generate text
+// generate Text
 function generateText(number, cubeName) {
     var loader = new THREE.FontLoader();
     loader.load('fonts/helvetiker_regular.typeface.js', function(font) {
@@ -191,12 +196,16 @@ function generateText(number, cubeName) {
 function main() {
 
     $(document).ready(function() {
+
+        // number that the user typed in
         var userInputList = [];
 
         $("input").keyup(function() {
 
             // get current ID
             var currentID = $(this).attr('id');
+
+            startBox(currentID)
 
             // user value
             var currentValInput = $("#" + currentID).val();
@@ -208,8 +217,7 @@ function main() {
             // covert to Integer
             parseInt(currentValInput);
 
-            // add to datastructure
-            // append(currentValInput);
+
 
             // push it to our list as Integer
             userInputList.push(currentValInput);
@@ -218,101 +226,136 @@ function main() {
             generateText(currentValInput, boxArray[currentID]);
 
 
+            const btn0 = $('#0').val();
+            const btn1 = $('#1').val();
+            const btn2 = $('#2').val();
+            const btn3 = $('#3').val();
+            const btn4 = $('#4').val();
+            parseInt(btn0);
+            parseInt(btn1);
+            parseInt(btn2);
+            parseInt(btn3);
+            parseInt(btn4);
+            if (isNaN(btn0 || btn1 || btn2 || btn3 || btn4)) {
+                document.getElementById(currentID).value = "";
 
+
+
+                alert("invalid Input")
+            }
+
+            if (btn0 && btn1 && btn2 && btn3 && btn4) {
+                console.log('true', btn0, btn1, btn2, btn3, btn4)
+                $('#startButton').css('opacity', '1');
+                $('#startButton').css('pointer-events', 'fill');
+
+            }
         })
 
 
 
+
+        // sStart Button
         $("#startButton").on("click", function() {
+
             // create JSONOject from user Input
             var userInputListJson = JSON.stringify(userInputList);
 
-            console.log("userinputjson: ", userInputListJson);
 
             // solved Array from Bubblesort as JSON OBJECT
             var sortedArrayJson = solveArraywithBubblesort(userInputListJson);
-            console.log("sortedArray", sortedArrayJson);
 
 
-            // convert to JSONObject
+            // convert to Java Script Object
             var sortedArray = JSON.parse(sortedArrayJson);
-            console.log("backend-recive sortedArray.arrayJSON\t", sortedArray.arrayJSON);
-            for (var x in userInputList) {
-                userInputList.push(parseInt(userInputList));
+
+
+
+            // convert backend Solution to Integer
+            for (let index = 0; index < userInputList.length; index++) {
+
+                userInputList[index] = parseInt(userInputList[index]);
 
             }
-            console.log("USERINPUT\t", userInputList[1]);
+
+
+            // Backendsolution
             sortedArray = sortedArray.arrayJSON;
 
 
             // create 2d array
             var twoDimensionalArray = [];
 
-            function setArraySize(arr) {
-                return arr.length / 5
-            }
 
-            var LEN = setArraySize(sortedArray)
-            var p = 0;
+            // Sorted Array length
+            var LEN = sortedArray.length;
+
             for (let i = 0; i < LEN; i++) {
-                twoDimensionalArray[i] = [];
-                for (let j = 0; j < 5; j++) {
-                    twoDimensionalArray[i][j] = sortedArray[p];
-                    p++;
+                twoDimensionalArray[i] = sortedArray[i];
 
-
-                }
 
 
             }
 
-            console.log("LEN", LEN);
-            console.log("\n\ntwoDimensionalArray", twoDimensionalArray)
-            var n = 0;
+
+            console.log("\nbackendsolution", twoDimensionalArray)
+            console.log("userintputList: ", userInputList)
+            var limiter = 0;
+            var iteration = 0;
+
+            //  function that run ever 3 seconds
             var timer = setInterval(() => {
-                for (let j = n; j < 4; j++) {
+                    for (let j = iteration; j < 5; j++) {
 
-                    var userInput = userInputList[j];
-                    userInput = parseInt(userInput);
-                    var backendSolution = twoDimensionalArray[index][j];
 
-                    if (userInput != backendSolution) {
+                        // current user Input 
+                        var userInput = userInputList[j];
+                        var userInputNext = userInputList[j + 1];
 
-                        // print numbers from backend / inputs
-                        console.log("userInput", userInput, "index:", j)
-                        console.log("backendSolution", backendSolution, "index: ", index, "\tj: ", j)
+                        if (userInput > userInputNext) {
 
-                        // index
-                        // console.log("j= ", j, "\tj+1 = ", j + 1)
+                            console.log("\n\nuserInput", userInput, "index:", j)
+                            console.log("userInputnext", userInputNext, "index: ", j)
 
-                        // console.log("switch function");
-                        switchBox(j, j + 1);
-                        // typeof 
-                        // console.log("typeof backend solution", typeof(backendSolution))
-                        // console.log("typeof backend user input ", typeof(userInput))
-                        // bool = bool.vars.onComplete();
-                        // console.log("bool value", bool)
-                        // console.log("interval 3.4 sekunds", index)
-                        n++;
-                        index = index + 1;
+                            // switch box BubbleAnimation function
+                            switchBox(j, j + 1);
 
-                        break;
+                            // switch user Inputs
+                            var tmp = userInput;
+                            userInputList[j] = userInputList[j + 1];
+                            userInputList[j + 1] = tmp;
+                            // console.log("after SWITCH ", userInputList)
+
+                            // set start point from for Loop
+                            iteration++;
+                            break;
+
+                        } else if (userInputList[j] == twoDimensionalArray[j]) {
+                            limiter++;
+                            console.log("limiter", limiter)
+                            iteration = 0;
+
+                            if (limiter > LEN) {
+
+                                console.log("TERMINATE CLEAR INTERVAL")
+                                clearInterval(timer);
+                            }
+
+
+                        }
+
 
                     }
-                }
 
-
-                if (index == LEN) {
-                    console.log("done")
-                    clearInterval(timer);
-
-                }
-            }, 3400);
-
-
-
+                },
+                3000);
 
         });
+
+
+        $("#clearButton").on("click", function() {
+            location.reload();
+        })
 
 
     });
@@ -324,7 +367,7 @@ function main() {
 
     // create Camera
     var camera = new THREE.PerspectiveCamera(
-        75,
+        45,
         window.innerWidth / window.innerHeight,
         1,
         1000
@@ -353,6 +396,7 @@ function main() {
 
         var mesh = new THREE.Mesh(floor, mat);
         mesh.material.side = THREE.DoubleSide;
+        mesh.position.y = -4
 
         // rotate 
         mesh.rotation.x = Math.PI / 2;
@@ -394,16 +438,7 @@ function main() {
 
 
 
-
-    // create Numbers
-    // generateText("8", box0);
-    // generateText("7", box1);
-    // generateText("2", box2);
-    // generateText("9", box3);
-    // generateText("4", box4);
-
-
-    // translate Box
+    // translate Box in X direction
     box0.translateX(-6);
     box1.translateX(-3);
     box2.translateX(0);
@@ -423,10 +458,6 @@ function main() {
     scene.add(pointLight);
     scene.add(directionalLight);
 
-
-
-
-
     //set comera position
     camera.position.x = 0;
     camera.position.y = 1; // 12
@@ -435,12 +466,8 @@ function main() {
     // camere view 
     camera.lookAt(new THREE.Vector3(0, 1, 0));
 
-
-
     // render Loop
     function updateScene(renderer, scene, camera, controlCamera) {
-
-
 
         renderer.render(scene, camera);
         requestAnimationFrame(function() {
@@ -451,53 +478,69 @@ function main() {
     updateScene(renderer, scene, camera, controlCamera);
 
 
-    // global timeline
 
 
     // function switch Boxes
     function switchBox(indexA, indexB) {
-        // var tl = new TimelineMax({}).delay(.3);
 
-        // // console.log("box" + indexA, " box" + indexB)
-        // // get current Box to switch
-        // var getCurrentBoxA = box0; //scene.getObjectByName("box0");
-        // var getCurrentBoxB = box1; //scene.getObjectByName("box1");
-
-        // // current Position from Boxes
-        // var boxACurrentPostion = getCurrentBoxA.position.x;
-        // var boxBCurrentPostion = getCurrentBoxB.position.x;
-
-        // //Animation in X | Y | Z
-        // tl.to(boxACurrentPostion.position, 1, { z: 2, ease: Expo.easeOut }).to(boxBCurrentPostion.position, 0.5, { x: boxACurrentPostion, ease: Expo.easeOut });
-        // tl.to(boxACurrentPostion.position, 1, { x: boxBCurrentPostion, ease: Expo.easeOut }).to(boxACurrentPostion.position, 1, { z: 0, ease: Expo.easeOut });
-
+        // timline
         var tl = new TimelineMax({
-            paused: false,
-            delay: .3,
-            // data: true,
-            onComplete: function() {
-                return true;
 
-            },
+
 
         });
 
-        // current Position from Boxes
+        // get current Boxes
         var box0 = list.findNode(indexA);
         var box1 = list.findNode(indexB);
-        // console.log("swtich indexA: ", indexA, "swtich indexB: ", indexB);
+
+        // change Box color+// yellow "rgb(222,184,135)
+
+        // get current Postion from boxes
         var boxACurrentPostion = box0.position.x;
         var boxBCurrentPostion = box1.position.x;
 
-        //nimation in X | Y | Z
+        //Animation in Boxes in DIRECTION | X | Y | Z
         tl.to(box0.position, 1, { z: 2, ease: Expo.easeOut }).to(box0.position, 0.5, { x: boxBCurrentPostion, ease: Expo.easeOut });
-        tl.to(box1.position, 1, { x: boxACurrentPostion, ease: Expo.easeOut }).to(box0.position, 1, { z: 0, ease: Expo.easeOut });
+        tl.to(box1.position, 1, { x: boxACurrentPostion, ease: Expo.easeOut }).to(box0.position, 1, { z: 0, ease: Expo.easeOut })
 
 
+        // switch position in Datastructure
         list.switchNodePositon(indexA)
+
+        // kritisch auf 
         return tl;
     }
 
+
+    function startBox(currentBox) {
+
+        // animation Box scale in y 
+        // timline
+        var tl = new TimelineMax({
+
+
+
+        });
+
+        var startBox = list.findNode(currentBox);
+
+
+        // console.log(startBox.material.color);
+        // Color Animation
+        // yellow "rgb(222,184,135)
+
+        // startBox.material.color.r = "0.222"
+        // startBox.material.color.g = "18"
+        // startBox.material.color.b = "0.135"
+
+
+        tl.to(startBox.position, 1, { y: -1, ease: Bounce.easeOut })
+
+
+
+
+    }
 
 
 }
